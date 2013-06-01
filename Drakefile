@@ -1,2 +1,5 @@
 _temp/speeches.csv <- [-timecheck]
 	psql -d hansearch2_production -c "COPY (select * from speeches) to stdout with csv header" >$OUTPUT
+
+output/speeches-plus.csv <- _temp/speeches.csv, src/gen_polarity.py
+	python $INPUT1 $INPUT0 $OUTPUT
