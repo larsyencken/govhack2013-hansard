@@ -1,0 +1,8 @@
+*.pyc
+*.pyo
+.DS_Store
+input
+_temp
+output
+.drake
+*.log
