@@ -1,16 +1,20 @@
-# hansard-data
+# GovHack 2013: Hansard Hack
 
-A quick data workflow for getting sentiment scores for chunks of hansard.
+## The project
 
-## Running
+To analyse hansard transcripts from Australian House of Representatives and Senate debates, in order to better track the topic and tone of political in Australia.
 
-From our `govhack` server, run:
+## The team
 
-```
-drake -a
-```
+- Daniel Heath
+- Lars Yencken
+- Olivia March
+- Rhiana Heath
 
-## Todo
+## This codebase
 
-- Generate a word cloud per speaker using [d3-cloud](https://github.com/jasondavies/d3-cloud)
-- Generate a bubble chart per speaker
+This codebase drives a "bubble visualisation" of political debate, and concerns itself with the text-processing aspects of working with hansard text.
+
+## Useful links
+
+- [OpenAustralia.org](http://www.openaustralia.org/): a site providing enriched hansard documents
