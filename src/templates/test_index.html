@@ -32,8 +32,8 @@ border: 1px solid gray;
 	   
 var page_text='URL not provided or maybe content is behind https';
 //alert(page_text);
-var diameter = 600 - 30,
-    limit=5000,
+var diameter = 1000 - 30,
+    limit=10000,
     format = d3.format(",d"),
     color = d3.scale.category20c();
 
@@ -54,8 +54,6 @@ var svg = d3.select("#svgid").append("svg")
 ];	
 */
 
-
-
 var dobj=[];
 
 for (var di=0;di<data[0].length;di++)
@@ -73,7 +71,7 @@ function display_pack(root)
     .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-	  .style("fill", function(d) { return color(data[0][d.key]); })
+	  .style("fill", function(d) { return color(data[0][d.value]); })
 	  	.on("mouseover", function(d,i)
 	{
 		d3.select(this).style("fill", "gold"); 
@@ -110,8 +108,6 @@ function display_pack(root)
 }
 //);
 
-
-
 function showToolTip(pMessage,pX,pY,pShow)
 {
   if (typeof(tooltipDivID)=="undefined")
@@ -136,15 +132,15 @@ function showToolTip(pMessage,pX,pY,pShow)
 
 </head>
 <body style="font-family:arial;">
+<H1> Speaker {{speakerid}} </H1>
+<p> Word frequency bubble chart for speaker {{speakerid}}. Hover over the bubble to highlight the word and view the frequency of use.</p>
+<!--
 <div id="infobox" style="color:gray;font-size:14px;">[<span id="urlbox" style=""><a href="" rel="nofollow" ></a></span>], No of Characters: , Number of words:<span id="countbox">3342</span></div>
-
+-->
 <!--a class="addthis_counter addthis_bubble_style"></a-->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-511ab711513fbf8f"></script>
 <!-- AddThis Button END -->
 </div>
-
-
-
  
 <div id="svgid">
 </div>
@@ -152,6 +148,6 @@ function showToolTip(pMessage,pX,pY,pShow)
 <div id="word_list">
 </div>
 
-
+<p> Based on Australian Government Hansard data - this application was created as part of GovHack 2013 </p>
 </body>
 </html>
