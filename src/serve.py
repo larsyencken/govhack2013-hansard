@@ -43,7 +43,11 @@ def bubble_speakers():
 
 @app.route('/bubble/<int:speakerid>')
 def bubble_speaker(speakerid):
-    return flask.render_template('test_index.html', speakerid=speakerid)
+    d = pd.read_csv(DATA_FILE)
+    speaker_data = d[d.nameid == speakerid]
+    name = ' '.join(t.title() for t in speaker_data.name.unique()[0].split())
+    return flask.render_template('test_index.html', speakerid=speakerid,
+                                 name=name)
 
 
 @app.route('/bubble/<int:speakerid>/words.js')
