@@ -11,3 +11,7 @@ _temp/speeches.csv <- [-timecheck]
 ; sentiment analysis on speeches
 output/speeches-plus.csv <- _temp/speeches.csv, src/gen_polarity.py
 	python $INPUT1 $INPUT0 $OUTPUT
+
+; work out the most common extra words
+output/stopwords-extra.txt <- output/speeches-plus.csv, src/extend_stopwords.py
+	python $INPUT1 $INPUT0 $OUTPUT
