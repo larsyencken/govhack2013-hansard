@@ -8,22 +8,20 @@
 Run a bubble chart visualisation.
 """
 
-import re
 import json
 from os import path
 from collections import defaultdict
 
 import flask
 import pandas as pd
-import nltk  # noqa
-from nltk.corpus import stopwords
+
+import text_util
+
 
 app = flask.Flask(__name__)
 
 DATA_FILE = path.join(path.dirname(__file__), '..', 'output',
                       'speeches-plus.csv')
-
-STOPWORDS = set(stopwords.words('english'))
 
 
 @app.route('/')
@@ -57,11 +55,8 @@ def bubble_speaker_json(speakerid):
     # get word frequency for this speaker
     freq = defaultdict(int)
     for text, polarity in zip(speaker_data.speech, speaker_data.polarity):
-        for s in nltk.sent_tokenize(text):
-            for w in nltk.word_tokenize(s):
-                w = norm_word(w)
-                if valid_word(w):
-                    freq[w] += 1
+        for t in text_util.iter_tokens(text):
+            freq[t] += 1
 
     return 'var data = %s;' % json.dumps([
         freq.keys(),
@@ -79,24 +74,6 @@ def wordcloud_speakers():
 @app.route('/wordcloud/<int:speakerid>')
 def wordcloud_speaker(speakerid):
     return 'Word cloud for speaker %d' % speakerid
-
-
-def norm_word(w):
-    w = w.lower()
-    return w
-
-
-def valid_word(w):
-    if len(w) <= 3:
-        return False
-
-    if w in STOPWORDS:
-        return False
-
-    if re.match('^[0-9]+$', w):
-        return False
-
-    return True
 
 
 if __name__ == '__main__':
