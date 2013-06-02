@@ -16,7 +16,7 @@ import nltk
 
 
 WORD_FILE = 'input/AFINN-111.txt'
-FIELDS = ['id', 'session_talker_id', 'speech', 'time', 'polarity']
+FIELDS = ['name', 'party', 'electorate', 'speech', 'time', 'polarity']
 
 
 def main(input_file, output_file):
