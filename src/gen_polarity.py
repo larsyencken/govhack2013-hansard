@@ -45,6 +45,7 @@ def get_polarity(text, scores):
     # simple approach: just add up any known word scores
     s = 0.0
     w = 0
+    text = text.replace('\u2014', ' - ')
     for sentence in nltk.sent_tokenize(text):
         for word in nltk.word_tokenize(sentence):
             s += scores.get(word.lower(), 0)
