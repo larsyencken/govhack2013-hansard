@@ -9,6 +9,7 @@ Run a bubble chart visualisation.
 """
 
 import re
+import json
 from os import path
 from collections import defaultdict
 
@@ -42,7 +43,7 @@ def bubble_speaker(speakerid):
     return flask.render_template('bubble.html', speakerid=speakerid)
 
 
-@app.route('/bubble/<int:speakerid>/words.json')
+@app.route('/bubble/<int:speakerid>/words.js')
 def bubble_speaker_json(speakerid):
     d = pd.read_csv(DATA_FILE)
 
@@ -59,10 +60,10 @@ def bubble_speaker_json(speakerid):
 
     # XXX remove stopwords
 
-    return flask.jsonify({'data': [
+    return 'var data = %s;' % json.dumps([
         freq.keys(),
         freq.values()
-    ]})
+    ])
 
 
 @app.route('/wordcloud')
