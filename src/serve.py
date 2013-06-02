@@ -10,18 +10,20 @@ Run a bubble chart visualisation.
 
 import json
 from os import path
-from collections import Counter
+from collections import Counter, namedtuple
 
 import flask
 import pandas as pd
 
 import text_util
 
+Speaker = namedtuple('Speaker', 'nameid name')
+
 
 app = flask.Flask(__name__)
 
-DATA_FILE = path.join(path.dirname(__file__), '..', 'output',
-                      'speeches-plus.csv')
+DATA_FILE = path.join(path.dirname(__file__), '../output/speeches-plus.csv')
+NAMES_FILE = path.join(path.dirname(__file__), '../output/nameids.csv')
 
 
 @app.route('/')
@@ -36,8 +38,8 @@ def test():
 
 @app.route('/bubble')
 def bubble_speakers():
-    d = pd.read_csv(DATA_FILE)
-    speakers = sorted(map(int, d.nameid.unique()))
+    d = pd.read_csv(NAMES_FILE)
+    speakers = sorted(Speaker(*s) for s in zip(d.nameid, d.name))
     return flask.render_template('bubble_index.html', speakers=speakers)
 
 
@@ -72,8 +74,8 @@ def bubble_speaker_json(speakerid):
 
 @app.route('/wordcloud')
 def wordcloud_speakers():
-    d = pd.read_csv(DATA_FILE)
-    speakers = sorted(map(int, d.nameid.unique()))
+    d = pd.read_csv(NAMES_FILE)
+    speakers = sorted(Speaker(*s) for s in zip(d.nameid, d.name))
     return flask.render_template('wordcloud_index.html', speakers=speakers)
 
 

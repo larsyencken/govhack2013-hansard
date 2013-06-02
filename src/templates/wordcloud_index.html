@@ -5,7 +5,7 @@
     <ul>
     {% for speaker in speakers %}
       <li>
-        <a href="/wordcloud/{{speaker}}">{{speaker}}</a>
+        <a href="/wordcloud/{{speaker.nameid}}">{{speaker.name}}</a>
       </li>
     {% endfor %}
     </ul>
