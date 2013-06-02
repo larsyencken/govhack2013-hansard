@@ -8,14 +8,21 @@
 Run a bubble chart visualisation.
 """
 
+import re
+from os import path
+from collections import defaultdict
+
 import flask
 import pandas as pd
-from os import path
+import nltk  # noqa
+from nltk.corpus import stopwords
 
 app = flask.Flask(__name__)
 
 DATA_FILE = path.join(path.dirname(__file__), '..', 'output',
                       'speeches-plus.csv')
+
+STOPWORDS = set(stopwords.words('english'))
 
 
 @app.route('/')
@@ -32,7 +39,30 @@ def bubble_speakers():
 
 @app.route('/bubble/<int:speakerid>')
 def bubble_speaker(speakerid):
-    return flask.render_template('bubble.html')
+    return flask.render_template('bubble.html', speakerid=speakerid)
+
+
+@app.route('/bubble/<int:speakerid>/words.json')
+def bubble_speaker_json(speakerid):
+    d = pd.read_csv(DATA_FILE)
+
+    speaker_data = d[d.session_talker_id == speakerid]
+
+    # get word frequency for this speaker
+    freq = defaultdict(int)
+    for text, polarity in zip(speaker_data.speech, speaker_data.polarity):
+        for s in nltk.sent_tokenize(text):
+            for w in nltk.word_tokenize(s):
+                w = norm_word(w)
+                if valid_word(w):
+                    freq[w] += 1
+
+    # XXX remove stopwords
+
+    return flask.jsonify({'data': [
+        freq.keys(),
+        freq.values()
+    ]})
 
 
 @app.route('/wordcloud')
@@ -45,6 +75,24 @@ def wordcloud_speakers():
 @app.route('/wordcloud/<int:speakerid>')
 def wordcloud_speaker(speakerid):
     return 'Word cloud for speaker %d' % speakerid
+
+
+def norm_word(w):
+    w = w.lower()
+    return w
+
+
+def valid_word(w):
+    if len(w) <= 3:
+        return False
+
+    if w in STOPWORDS:
+        return False
+
+    if re.match('^[0-9]+$', w):
+        return False
+
+    return True
 
 
 if __name__ == '__main__':
