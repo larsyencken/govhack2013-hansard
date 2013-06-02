@@ -47,6 +47,21 @@ var svg = d3.select("#svgid").append("svg")
     .attr("height", diameter)
     .attr("class", "bubble");
 
+
+function magic_color(sentiment) {
+  var base = 0.5;
+  var green = 0.7;
+
+  var blue = base;
+  var red = base;
+  if (sentiment < 0) {
+    red = base + -base * sentiment * 20;
+  } else {
+    blue = base + base * sentiment * 20;
+  }
+  return d3.rgb(255*red, 255*green, 255*blue);
+}
+
 /*
  * var data=[
 ["Tea","Coffee","Soda","Chips","Milk","Chocolate","Beer","Wine","Tobacco","gold","silver"],
@@ -64,7 +79,6 @@ for (var di=0;di<data[0].length;di++)
 }
 	display_pack({children: dobj});
 
-//d3.json("flare.json", function(error, root)
 function display_pack(root)
 {
   var node = svg.selectAll(".node")
@@ -73,7 +87,7 @@ function display_pack(root)
     .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-	  .style("fill", function(d) { return color(data[3][d.key]); })
+	  .style("fill", function(d) { return magic_color(data[3][d.key]); })
 	  	.on("mouseover", function(d,i)
 	{
 		d3.select(this).style("fill", "gold");
@@ -89,7 +103,7 @@ function display_pack(root)
 	})
     .on("mouseout", function()
 	{
-		d3.select(this).style("fill", function(d) { return color(data[3][d.key]); });
+		d3.select(this).style("fill", function(d) { return magic_color(data[3][d.key]); });
 		showToolTip(" ",0,0,false);
 	})
 	;
