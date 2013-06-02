@@ -10,25 +10,33 @@ Add polarity to each speech item.
 
 import sys
 
-import pandas as pd
+import csv
 import nltk
 
 
 WORD_FILE = 'input/AFINN-111.txt'
+FIELDS = ['id', 'session_talker_id', 'speech', 'time', 'polarity']
 
 
 def main(input_file, output_file):
     scores = _load_features(WORD_FILE)
-    d = pd.read_csv(input_file, index_col=None)
 
-    # skip any without text
-    d = d[~pd.isnull(d.speech)]
+    i = 0
+    with open(input_file) as istream:
+        with open(output_file, 'w') as ostream:
+            wr = csv.DictWriter(ostream, FIELDS).writerow
+            for r in csv.DictReader(istream):
+                # ignore empty speech
+                if not r['speech'].strip():
+                    continue
 
-    d['polarity'] = d.speech.apply(
-        lambda t: get_polarity(t, scores)
-    )
+                r['polarity'] = get_polarity(r['speech'], scores)
+                wr(r)
+                i += 1
 
-    d.to_csv(output_file, index=False)
+                if i % 1000 == 0:
+                    print i
+                    sys.stdout.flush()
 
 
 def get_polarity(text, scores):
