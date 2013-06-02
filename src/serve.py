@@ -30,6 +30,9 @@ STOPWORDS = set(stopwords.words('english'))
 def index():
     return flask.render_template('index.html')
 
+@app.route('/test')
+def test():
+    return flask.render_template('test_index.html')
 
 @app.route('/bubble')
 def bubble_speakers():
@@ -40,7 +43,7 @@ def bubble_speakers():
 
 @app.route('/bubble/<int:speakerid>')
 def bubble_speaker(speakerid):
-    return flask.render_template('bubble.html', speakerid=speakerid)
+    return flask.render_template('test_index.html', speakerid=speakerid)
 
 
 @app.route('/bubble/<int:speakerid>/words.js')
