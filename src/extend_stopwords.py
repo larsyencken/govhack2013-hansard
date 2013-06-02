@@ -9,14 +9,14 @@ Generate extra stopword data specific to hansard text.
 """
 
 import sys
-from collections import defaultdict
+from collections import Counter
 import csv
 
 import text_util
 
 
 def main(input_file, output_file):
-    freq = defaultdict(int)
+    freq = Counter()
     i = 0
     for row in csv.DictReader(open(input_file)):
         for text in row['speech']:
@@ -28,7 +28,7 @@ def main(input_file, output_file):
             sys.stdout.flush()
 
     with open(output_file, 'w') as ostream:
-        for tok, count in freq.most_common(100):
+        for tok, count in freq.most_common(500):
             print >> ostream, tok
 
 
