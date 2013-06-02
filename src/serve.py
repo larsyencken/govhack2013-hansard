@@ -10,10 +10,11 @@ Run a bubble chart visualisation.
 
 import json
 from os import path
-from collections import Counter, namedtuple
+from collections import Counter, namedtuple, defaultdict
 
 import flask
 import pandas as pd
+import numpy as np
 
 Speaker = namedtuple('Speaker', 'nameid name')
 
@@ -56,19 +57,25 @@ def bubble_speaker(speakerid):
 def bubble_speaker_json(speakerid):
     stopwords = set(l.strip() for l in open(STOP_FILE))
 
-    # get word frequency for this speaker
     freq = Counter()
+    word_pol = defaultdict(list)
     for row in speaker_data(speakerid):
-        #polarity = row['polarity']
+        polarity = float(row['polarity'])
         for tok, count in row['tokens'].iteritems():
             if tok not in stopwords:
                 freq[tok] += 1
+                word_pol[tok].append(polarity)
 
     freq = dict(freq.most_common(100))
 
+    print word_pol
+    pol = {w: np.mean(p) for (w, p) in word_pol.iteritems()}
+
     return 'var data = %s;' % json.dumps([
         freq.keys(),
-        freq.values()
+        freq.values(),
+        pol.keys(),
+        pol.values(),
     ])
 
 

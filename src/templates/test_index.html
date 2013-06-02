@@ -55,10 +55,12 @@ var svg = d3.select("#svgid").append("svg")
 */
 
 var dobj=[];
+var sent=[];
 
 for (var di=0;di<data[0].length;di++)
 {
   dobj.push({"key":di,"value":data[1][di]});
+  sent.push({"key":di,"value":data[3][di]});
 }
 	display_pack({children: dobj});
 
@@ -71,7 +73,7 @@ function display_pack(root)
     .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-	  .style("fill", function(d) { return color(data[0][d.value]); })
+	  .style("fill", function(d) { return color(data[3][d.key]); })
 	  	.on("mouseover", function(d,i)
 	{
 		d3.select(this).style("fill", "gold");
@@ -87,7 +89,7 @@ function display_pack(root)
 	})
     .on("mouseout", function()
 	{
-		d3.select(this).style("fill", function(d) { return color(data[0][d.key]); });
+		d3.select(this).style("fill", function(d) { return color(data[3][d.key]); });
 		showToolTip(" ",0,0,false);
 	})
 	;
@@ -125,6 +127,22 @@ function showToolTip(pMessage,pX,pY,pShow)
 
 //d3.select(self.frameElement).style("height", diameter + "px");
 
+var wordPercentStr="<table><tr><td>Word</td><td>Count</td><td>Sentiment</td><td>unused</td></tr>";
+var wi=0;
+//var density;
+//var grossDensity;
+for (var wp=0; wp<sent.length;wp++)
+{
+  wi=wp;
+/*  wi=data[0][wp];*/
+  wordPercentStr+="<tr>";
+  //wordPercentStr+="<td>"+data[0][wi]+"</td><td>"+data[1][wi]+"</td><td>"+data[3][wi]+"</td><td>"+"<p style=""color:"color(data[3][wi])+i""">colour</p> </td>";
+  wordPercentStr+="<td>"+data[0][wi]+"</td><td>"+data[1][wi]+"</td><td>"+data[3][wi]+"</td><td>"+color(data[3][wi])+"</td>";
+  wordPercentStr+="</tr>";
+ }
+wordPercentStr+="</table>";
+$("#topwords").html(wordPercentStr);
+
 }
 ) //document ready
 
@@ -139,6 +157,9 @@ function showToolTip(pMessage,pX,pY,pShow)
 <div id="infobox" style="color:gray;font-size:14px;">[<span id="urlbox" style=""><a href="" rel="nofollow" ></a></span>], No of Characters: , Number of words:<span id="countbox">3342</span></div>
 -->
 <!--a class="addthis_counter addthis_bubble_style"></a-->
+
+
+
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-511ab711513fbf8f"></script>
 <!-- AddThis Button END -->
 
@@ -149,6 +170,9 @@ function showToolTip(pMessage,pX,pY,pShow)
 </div>
 
 <p> Based on Australian Government Hansard data - this application was created as part of GovHack 2013 </p>
+
+<div id="topwords">
+</div>
 </div>
 </body>
 </html>
