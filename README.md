@@ -6,6 +6,8 @@ To analyse hansard transcripts from Australian House of Representatives and Sena
 
 ## The team
 
+Our team "Science, you monster" had four members:
+
 - Daniel Heath
 - Lars Yencken
 - Olivia March
@@ -14,6 +16,13 @@ To analyse hansard transcripts from Australian House of Representatives and Sena
 ## This codebase
 
 This codebase drives a "bubble visualisation" of political debate, and concerns itself with the text-processing aspects of working with hansard text.
+
+It makes use of:
+
+- [drake](https://github.com/Factual/drake): a data workflow tool
+- [NLTK](http://nltk.org/): the Natural Language Toolkit
+- [flask](http://flask.pocoo.org/): a web framework for Python
+- [pandas](http://pandas.pydata.org/): a Python data analysis library
 
 ## Useful links
 
