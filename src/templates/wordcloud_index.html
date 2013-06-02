@@ -1,0 +1,13 @@
+<html>
+  <body>
+    <h1>Wordcloud</h1>
+    <p>Pick a speaker below to see the wordcloud for that speaker:</p>
+    <ul>
+    {% for speaker in speakers %}
+      <li>
+        <a href="/wordcloud/{{speaker}}">{{speaker}}</a>
+      </li>
+    {% endfor %}
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<html>
+  <body>
+    <h1>Bubble viz</h1>
+    <p>Pick a speaker below to see the word bubbles for that speaker:</p>
+    <ul>
+    {% for speaker in speakers %}
+      <li>
+        <a href="/bubble/{{speaker}}">{{speaker}}</a>
+      </li>
+    {% endfor %}
+    </ul>
+  </body>
+</html>
