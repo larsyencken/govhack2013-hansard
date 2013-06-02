@@ -23,6 +23,7 @@ It makes use of:
 - [NLTK](http://nltk.org/): the Natural Language Toolkit
 - [flask](http://flask.pocoo.org/): a web framework for Python
 - [pandas](http://pandas.pydata.org/): a Python data analysis library
+- [d3](http://d3js.org/): a Javascript data visualisation framework
 
 ## Useful links
 
