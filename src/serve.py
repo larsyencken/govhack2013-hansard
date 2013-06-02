@@ -15,15 +15,15 @@ from collections import Counter, namedtuple
 import flask
 import pandas as pd
 
-import text_util
-
 Speaker = namedtuple('Speaker', 'nameid name')
 
 
 app = flask.Flask(__name__)
 
-DATA_FILE = path.join(path.dirname(__file__), '../output/speeches-plus.csv')
+SPEAKER_DIR = path.join(path.dirname(__file__), '../output/speakers')
 NAMES_FILE = path.join(path.dirname(__file__), '../output/nameids.csv')
+STOP_FILE = path.join(path.dirname(__file__),
+                      '../input/stopwords-extra-manual.txt')
 
 
 @app.route('/')
@@ -45,24 +45,24 @@ def bubble_speakers():
 
 @app.route('/bubble/<int:speakerid>')
 def bubble_speaker(speakerid):
-    d = pd.read_csv(DATA_FILE)
+    d = pd.read_csv(NAMES_FILE)
     speaker_data = d[d.nameid == speakerid]
-    name = ' '.join(t.title() for t in speaker_data.name.unique()[0].split())
-    return flask.render_template('test_index.html', speakerid=speakerid,
-                                 name=name)
+    speaker, = [Speaker(*s) for s in zip(speaker_data.nameid,
+                                         speaker_data.name)]
+    return flask.render_template('test_index.html', speaker=speaker)
 
 
 @app.route('/bubble/<int:speakerid>/words.js')
 def bubble_speaker_json(speakerid):
-    d = pd.read_csv(DATA_FILE)
-
-    speaker_data = d[d.nameid == speakerid]
+    stopwords = set(l.strip() for l in open(STOP_FILE))
 
     # get word frequency for this speaker
     freq = Counter()
-    for text, polarity in zip(speaker_data.speech, speaker_data.polarity):
-        for t in text_util.iter_tokens(text):
-            freq[t] += 1
+    for row in speaker_data(speakerid):
+        #polarity = row['polarity']
+        for tok, count in row['tokens'].iteritems():
+            if tok not in stopwords:
+                freq[tok] += 1
 
     freq = dict(freq.most_common(100))
 
@@ -82,6 +82,13 @@ def wordcloud_speakers():
 @app.route('/wordcloud/<int:speakerid>')
 def wordcloud_speaker(speakerid):
     return 'Word cloud for speaker %d' % speakerid
+
+
+def speaker_data(nameid):
+    f = path.join(SPEAKER_DIR, '%s.json' % nameid)
+    with open(f) as istream:
+        for l in istream:
+            yield json.loads(l)
 
 
 if __name__ == '__main__':

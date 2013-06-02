@@ -20,7 +20,7 @@ border: 1px solid gray;
 </style>
 <!-- Speakers -->
 
-<script src="/bubble/{{speakerid}}/words.js"></script>
+<script src="/bubble/{{speaker.nameid}}/words.js"></script>
 
 <!--http://www.infocaptor.com-->
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -132,9 +132,9 @@ function showToolTip(pMessage,pX,pY,pShow)
 
 </head>
 <body style="font-family:arial;">
-<h1 style="text-align: center">{{name}}</h1>
+<h1 style="text-align: center">{{speaker.name}}</h1>
 <div align="center">
-<p> Word frequency bubble chart for speaker {{speakerid}}. Hover over the bubble to highlight the word and view the frequency of use.</p>
+<p> Word frequency bubble chart for {{speaker.name}}. Hover over the bubble to highlight the word and view the frequency of use.</p>
 <!--
 <div id="infobox" style="color:gray;font-size:14px;">[<span id="urlbox" style=""><a href="" rel="nofollow" ></a></span>], No of Characters: , Number of words:<span id="countbox">3342</span></div>
 -->

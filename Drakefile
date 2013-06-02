@@ -19,5 +19,8 @@ output/stopwords-extra.txt <- output/speeches-tokenized.json, src/extend_stopwor
 output/nameids.csv <- output/speeches-plus.csv, src/gen_names.py
 	python $INPUT1
 
-output/speeches-tokenized.json <- output/speeches-plus.csv, src/tokenize.py
+output/speeches-tokenized.json <- output/speeches-plus.csv, src/json_tokenize.py
+	python $INPUT1 $INPUT0 $OUTPUT
+
+output/speakers/ <- output/speeches-tokenized.json, src/sort_by_speaker.py
 	python $INPUT1 $INPUT0 $OUTPUT
