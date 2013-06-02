@@ -13,8 +13,11 @@ output/speeches-plus.csv <- _temp/speeches.csv, src/gen_polarity.py
 	python $INPUT1 $INPUT0 $OUTPUT
 
 ; work out the most common extra words
-output/stopwords-extra.txt <- output/speeches-plus.csv, src/extend_stopwords.py
+output/stopwords-extra.txt <- output/speeches-tokenized.json, src/extend_stopwords.py
 	python $INPUT1 $INPUT0 $OUTPUT
 
 output/nameids.csv <- output/speeches-plus.csv, src/gen_names.py
 	python $INPUT1
+
+output/speeches-tokenized.json <- output/speeches-plus.csv, src/tokenize.py
+	python $INPUT1 $INPUT0 $OUTPUT
