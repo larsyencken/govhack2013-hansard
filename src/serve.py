@@ -30,14 +30,16 @@ STOPWORDS = set(stopwords.words('english'))
 def index():
     return flask.render_template('index.html')
 
+
 @app.route('/test')
 def test():
     return flask.render_template('test_index.html')
 
+
 @app.route('/bubble')
 def bubble_speakers():
     d = pd.read_csv(DATA_FILE)
-    speakers = sorted(map(int, d.session_talker_id.unique()))
+    speakers = sorted(map(int, d.nameid.unique()))
     return flask.render_template('bubble_index.html', speakers=speakers)
 
 
@@ -50,7 +52,7 @@ def bubble_speaker(speakerid):
 def bubble_speaker_json(speakerid):
     d = pd.read_csv(DATA_FILE)
 
-    speaker_data = d[d.session_talker_id == speakerid]
+    speaker_data = d[d.nameid == speakerid]
 
     # get word frequency for this speaker
     freq = defaultdict(int)
@@ -61,8 +63,6 @@ def bubble_speaker_json(speakerid):
                 if valid_word(w):
                     freq[w] += 1
 
-    # XXX remove stopwords
-
     return 'var data = %s;' % json.dumps([
         freq.keys(),
         freq.values()
@@ -72,7 +72,7 @@ def bubble_speaker_json(speakerid):
 @app.route('/wordcloud')
 def wordcloud_speakers():
     d = pd.read_csv(DATA_FILE)
-    speakers = sorted(map(int, d.session_talker_id.unique()))
+    speakers = sorted(map(int, d.nameid.unique()))
     return flask.render_template('wordcloud_index.html', speakers=speakers)
 
 
