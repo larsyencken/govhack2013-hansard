@@ -10,6 +10,7 @@ Add polarity to each speech item.
 
 import sys
 
+import pandas as pd
 import csv
 import nltk
 
@@ -25,6 +26,7 @@ def main(input_file, output_file):
     with open(input_file) as istream:
         with open(output_file, 'w') as ostream:
             wr = csv.DictWriter(ostream, FIELDS).writerow
+            wr(zip(FIELDS, FIELDS))
             for r in csv.DictReader(istream):
                 # ignore empty speech
                 if not r['speech'].strip():
