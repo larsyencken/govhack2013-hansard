@@ -29,15 +29,11 @@ STOP_FILE = path.join(path.dirname(__file__),
 
 @app.route('/')
 def index():
-    return flask.render_template('index.html')
+    return flask.redirect('/bubble/')
+    #return flask.render_template('index.html')
 
 
-@app.route('/test')
-def test():
-    return flask.render_template('test_index.html')
-
-
-@app.route('/bubble')
+@app.route('/bubble/')
 def bubble_speakers():
     d = pd.read_csv(NAMES_FILE)
     speakers = sorted(Speaker(*s) for s in zip(d.nameid, d.name))
@@ -68,7 +64,6 @@ def bubble_speaker_json(speakerid):
 
     freq = dict(freq.most_common(100))
 
-    print word_pol
     pol = {w: np.mean(p) for (w, p) in word_pol.iteritems()}
 
     return 'var data = %s;' % json.dumps([
@@ -99,4 +94,4 @@ def speaker_data(nameid):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run('0.0.0.0', debug=True)
