@@ -20,7 +20,7 @@ WORD_FILE = 'input/AFINN-111.txt'
 def main(input_file, output_file):
     scores = _load_features(WORD_FILE)
     d = pd.read_csv(input_file, index_col=None)
-    
+
     # skip any without text
     d = d[~pd.isnull(d.speech)]
 
@@ -44,14 +44,8 @@ def get_polarity(text, scores):
 
 
 def _load_features(f):
-    scores = {}
-    with open(f) as istream:
-        for line in istream:
-            # The file is tab-delimited. "\t" means "tab character"
-            term, score  = line.split("\t")
-            # Convert the score to an integer.
-            scores[term] = int(score)
-
+    d = pd.read_csv(f, sep='\t')
+    scores = dict(zip(d.word, d.polarity))
     return scores
 
 
