@@ -26,7 +26,7 @@ def main(input_file, output_file):
     with open(input_file) as istream:
         with open(output_file, 'w') as ostream:
             wr = csv.DictWriter(ostream, FIELDS).writerow
-            wr(zip(FIELDS, FIELDS))
+            wr(dict(zip(FIELDS, FIELDS)))
             for r in csv.DictReader(istream):
                 # ignore empty speech
                 if not r['speech'].strip():
