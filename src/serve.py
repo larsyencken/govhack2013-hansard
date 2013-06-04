@@ -47,7 +47,7 @@ def bubble_speaker(speakerid):
     speaker_data = d[d.nameid == speakerid]
     speaker, = [Speaker(*s) for s in zip(speaker_data.nameid,
                                          speaker_data.name)]
-    return flask.render_template('test_index.html', speaker=speaker)
+    return flask.render_template('bubble.html', speaker=speaker)
 
 
 @app.route('/bubble/<int:speakerid>/words.js')
